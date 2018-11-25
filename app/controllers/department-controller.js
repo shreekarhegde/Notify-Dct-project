@@ -49,7 +49,7 @@ router.put('/:id', (req, res) => {
 //find department by id
 router.get('/:id', (req, res) => {
     let id = req.params.id;
-    Department.findById(id).then((department) => {
+    Department.findById(id).populate('members').then((department) => {
         res.send(department);
     });
 });
