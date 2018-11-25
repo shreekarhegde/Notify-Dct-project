@@ -54,6 +54,23 @@ router.put('/:id', (req, res) => {
 });
 
 
+//delete an emoployee
+router.delete('/:id', (req, res) => {
+    let id = req.params.id;
+    Employee.findByIdAndRemove(id).then((employee) => {
+        if(employee) {
+            res.send(employee);
+        } else {
+            res.send({
+                notice: 'employee not found'
+            })
+        }
+    }).catch((err) => {
+        res.send(err);
+    });
+});
+
+
 
 module.exports = {
     employeesController: router
