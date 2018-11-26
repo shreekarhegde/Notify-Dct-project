@@ -48,7 +48,7 @@ const employeeSchema = new Schema({
 employeeSchema.post('save', function(next){
     let memberId = this._id;
     let departmentId = this.bio.department;
-    Department.findById(departmentId).then((department) => {
+    Department.findById(departmentId).populate('department').then((department) => {
         department.members.push(memberId);
         department.save();
     })

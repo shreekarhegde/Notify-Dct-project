@@ -5,7 +5,7 @@ const _= require('lodash');
 
 //see all of departments
 router.get('/', (req, res) => {
-   Department.find().then((departments) => {
+   Department.find().populate('members').then((departments) => {
        res.send(departments);
    }).catch((err) => {
        res.send(err);
