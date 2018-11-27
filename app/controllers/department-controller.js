@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Department } = require('../models/department');
+const { Employee } = require('../models/employee');
 const _= require('lodash');
 
 //see all of departments
@@ -31,6 +32,16 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     let id = req.params.id;
     let body = req.body;
+
+    Department.findOneAndUpdate({departmentName: req.body.departmentName}, {$pull:{members: {$in:req.body.selectedMembers}}}).then((res) => {
+        //console.log(res);
+        Employee.updateMany({_id:req.body.selectedMembers},{$unset:{'bio.department':""}}).then((res) => {
+            console.log(res);
+        })
+    });
+
+   
+    
     Department.findOneAndUpdate({ _id: id}, { $set: body }, { new: true, runValidators: true }).populate('members').then((department) => {
         if(!department){
             res.send({
@@ -41,7 +52,7 @@ router.put('/:id', (req, res) => {
             department,
             notice: 'Successfully updated department'
         });
-        department.members.map(member => member.bio.department.push(department._id));
+        // department.members.map(member => member.bio.department.push(department._id));
         department.save();
     });
 });
@@ -80,6 +91,7 @@ router.delete('/:id', (req, res) => {
         res.send(err);
     });
 });
+
 
 
 
