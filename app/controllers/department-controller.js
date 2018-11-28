@@ -33,15 +33,12 @@ router.put('/:id', (req, res) => {
     let id = req.params.id;
     let body = req.body;
 
-    Department.findOneAndUpdate({departmentName: req.body.departmentName}, {$pull:{members: {$in:req.body.selectedMembers}}}).then((res) => {
-        //console.log(res);
-        Employee.updateMany({_id:req.body.selectedMembers},{$unset:{'bio.department':""}}).then((res) => {
+    Department.findOneAndUpdate({departmentName: req.body.departmentName}, {$pull:{members: {$in: req.body.selectedMembers}}}).then((res) => {
+        Employee.updateMany({_id: req.body.selectedMembers},{ $unset: {'bio.department': ""}}).then((res) => {
             console.log(res);
         })
     });
 
-   
-    
     Department.findOneAndUpdate({ _id: id}, { $set: body }, { new: true, runValidators: true }).populate('members').then((department) => {
         if(!department){
             res.send({
