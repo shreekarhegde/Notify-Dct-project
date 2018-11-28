@@ -4,7 +4,7 @@ const { Employee } = require('../models/employee');
 
 //see all the employees
 router.get('/', (req, res) => {
-    Employee.find().then((employees) => {
+    Employee.find().populate('bio.department').then((employees) => {
         res.send(employees);
     }).catch((err) => {
         res.send(err);
@@ -14,10 +14,10 @@ router.get('/', (req, res) => {
 //find by id 
 router.get('/:id', (req, res) => {
     Employee.findById(req.params.id).populate('bio.department').then((employee) => {
+        console.log(employee);
         res.send({
-             employee: employee.bio.firstName,
-            department: employee.bio.department.departmentName
-        });
+            employee
+        })
     }).catch((err) => {
         res.send(err);
     });
