@@ -55,6 +55,10 @@ employeeSchema.post('save', function(next){
     //next();
 })
 
+employeeSchema.methods.transferDepartment = function(oldId, newId){
+    Department.findByIdAndRemove(oldId, {members: this._id});
+    return Department.findOneAndUpdate({_id: newId}, {$push:{members: this.id}});
+}
 
 const Employee = mongoose.model('Employee', employeeSchema);
 

@@ -49,7 +49,6 @@ router.put('/:id', (req, res) => {
             department,
             notice: 'Successfully updated department'
         });
-        // department.members.map(member => member.bio.department.push(department._id));
         department.save();
     });
 });

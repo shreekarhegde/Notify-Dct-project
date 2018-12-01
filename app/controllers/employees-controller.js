@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Employee } = require('../models/employee');
+const {Department} = require('../models/department');
 
 //see all the employees
 router.get('/', (req, res) => {
@@ -14,7 +15,6 @@ router.get('/', (req, res) => {
 //find by id 
 router.get('/:id', (req, res) => {
     Employee.findById(req.params.id).populate('bio.department').then((employee) => {
-        console.log(employee);
         res.send({
             employee
         })
@@ -41,16 +41,15 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     let id = req.params.id;
     let body = req.body;
-    Employee.findByIdAndUpdate({ _id: id}, {$set: body}, { new: true, runValidators: true }).then((employee) => {
-        if(!employee){
-            res.send({
-                notice: 'employee not found'
-            });
-        }
-        res.send({
-            notice: 'successfully update employee details'
-        });
-    });
+    Employee.findOneAndUpdate({ _id: id}, {$set: body}).then((employee) => {
+        console.log(employee.bio.department, "new department");
+        console.log(body.bio.department, "old department");
+        if(employee.bio.department !== body.bio.department){
+            return employee.transferDepartment(employee.bio.department, body.bio.department);
+        }    
+    }).then((employee) => {
+        res.send(employee);
+    })
 });
 
 
