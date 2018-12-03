@@ -37,7 +37,7 @@ const employeeSchema = new Schema({
     },
     events: [{
         type: Schema.Types.ObjectId,
-        ref: 'Event'
+        ref: 'Activity'
     }],
     group: {
         type: Schema.Types.ObjectId,
@@ -56,7 +56,9 @@ employeeSchema.post('save', function(next){
 })
 
 employeeSchema.methods.transferDepartment = function(oldId, newId){
-    Department.findByIdAndRemove(oldId, {members: this._id});
+    Department.findByIdAndUpdate({_id: oldId}, {$pull:{members: this._id}}).then((member) => {
+        console.log(member, "removed member");
+    })
     return Department.findOneAndUpdate({_id: newId}, {$push:{members: this.id}});
 }
 

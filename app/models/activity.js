@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const  {Department}  = require('./department');
-const  {Employee} = require('./employee');
+const { Department }  = require('./department');
+const { Employee } = require('./employee');
 
-const eventSchema = new Schema({
-    eventName: {
+const activitySchema = new Schema({
+    activityName: {
         type: String,
         minlength: 3,
         required: true
@@ -31,10 +31,6 @@ const eventSchema = new Schema({
             minlength: 2
         }
     },
-    venue: {
-        type: String,
-        minlength: 2
-        },
     schedule: {
         time: {
             type: String,
@@ -47,17 +43,26 @@ const eventSchema = new Schema({
         }
 });
 
-eventSchema.post('save', function(next){
+
+activitySchema.post('save', function(next){
     let eventId = this._id;
-    this.participants.map(participantId => Employee.findById(participantId).then((participant) => {
-        participant.events.push(eventId);
-        participant.save();
-    }));
+    console.log(eventId);
+    let departmentId = this.department;
+    console.log(departmentId);
+    Department.findById(departmentId).populate('activity').then((department) => {
+        console.log(department);
+        department.activities.push(eventId);
+        department.save().then((department) => {
+            console.log(department);
+        });
+    }).catch((err) => {
+        console.log(err);
+    })
 });
 
+const Activity = mongoose.model('Activity', activitySchema);
 
-const Event = mongoose.model('Event', eventSchema);
 
 module.exports = {
-    Event
+    Activity
 }
