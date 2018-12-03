@@ -75,7 +75,7 @@ router.get('/name', (req, res) => {
 //delete a department
 router.delete('/:id', (req, res) => {
     let id = req.params.id;
-    Department.findByIdAndRemove(id).then((department) => {
+    Department.findByIdAndDelete(id).then((department) => {
         if(department) {
             res.send(department);
         } else {

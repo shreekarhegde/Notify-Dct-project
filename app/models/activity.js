@@ -45,14 +45,14 @@ const activitySchema = new Schema({
 
 
 activitySchema.post('save', function(next){
-    let eventId = this._id;
+    let activityId = this._id;
     let departmentId = this.department;
     let participants = this.participants;
-    Employee.updateMany({_id: {$in: participants}}, {$push: {activities: eventId}}).then((participants) => {        
+    Employee.updateMany({_id: {$in: participants}}, {$push: {activities: activityId}}).then((participants) => {        
             console.log(participants); 
     });
     Department.findById(departmentId).populate('activity').then((department) => {
-        department.activities.push(eventId);
+        department.activities.push(activityId);
         department.save().then((department) => {
             console.log(department);
         });
@@ -60,6 +60,7 @@ activitySchema.post('save', function(next){
         res.send(err);
     })
 });
+
 
 const Activity = mongoose.model('Activity', activitySchema);
 

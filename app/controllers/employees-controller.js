@@ -5,7 +5,7 @@ const {Department} = require('../models/department');
 
 //see all the employees
 router.get('/', (req, res) => {
-    Employee.find().populate('bio.department').then((employees) => {
+    Employee.find().populate('bio.department').populate('activities').then((employees) => {
         res.send(employees);
     }).catch((err) => {
         res.send(err);
