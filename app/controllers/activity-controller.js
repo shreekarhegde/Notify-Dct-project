@@ -31,6 +31,17 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     let body = req.body;
     let id = req.params.id;
+    let participantsToBeRemoved = req.body.participantsToBeRemoved;
+    let departmentToBeRemoved = req.body.departmentToBeRemoved;
+
+    Activity.findOneAndUpdate({ _id: id}, {$pull: {participants: {$in: participantsToBeRemoved}}}).then((activity) => {
+        console.log(activity, "removed from particpants");
+    });
+
+    Activity.findOneAndUpdate({ _id: id}, {$pull: {department: {$in: departmentToBeRemoved}}}).then((activity) => {
+        console.log(activity, "removed from departments");
+    });
+
     Activity.findByIdAndUpdate({ _id: id}, {$set: body},{ new: true, runValidators: true }).then((activity) => {
         if(!activity){
             res.send({
