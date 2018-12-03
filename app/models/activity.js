@@ -11,11 +11,11 @@ const activitySchema = new Schema({
     },
     participants: [{
         type: Schema.Types.ObjectId,
-        reference: 'Employee'
+        ref: 'Employee'
     }],
     department: {
         type: Schema.Types.ObjectId,
-        reference: 'Department'
+        ref: 'Department'
     },
     venue: {
         type: String,
