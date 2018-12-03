@@ -6,7 +6,7 @@ const { Activity } = require('../models/activity');
 
 //see all the activities
 router.get('/', (req, res) => {
-    Activity.find().populate('department').then((activities) => {
+    Activity.find().populate('department').populate('participants').then((activities) => {
         res.send(activities);
     }).catch((err) => {
         res.send(err);
@@ -34,13 +34,17 @@ router.put('/:id', (req, res) => {
     let participantsToBeRemoved = req.body.participantsToBeRemoved;
     let departmentToBeRemoved = req.body.departmentToBeRemoved;
 
-    Activity.findOneAndUpdate({ _id: id}, {$pull: {participants: {$in: participantsToBeRemoved}}}).then((activity) => {
-        console.log(activity, "removed from particpants");
-    });
-
-    Activity.findOneAndUpdate({ _id: id}, {$pull: {department: {$in: departmentToBeRemoved}}}).then((activity) => {
-        console.log(activity, "removed from departments");
-    });
+    if(participantsToBeRemoved){
+        Activity.findOneAndUpdate({ _id: id}, {$pull: {participants: {$in: participantsToBeRemoved}}}).then((activity) => {
+            console.log(activity, "removed particpants");
+        });
+    }
+    
+    if(departmentToBeRemoved){
+        Activity.findOneAndUpdate({ _id: id}, {$pull: {department: {$in: departmentToBeRemoved}}}).then((activity) => {
+            console.log(activity, "removed departments");
+        });
+    }
 
     Activity.findByIdAndUpdate({ _id: id}, {$set: body},{ new: true, runValidators: true }).then((activity) => {
         if(!activity){

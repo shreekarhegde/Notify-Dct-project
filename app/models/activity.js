@@ -9,6 +9,10 @@ const activitySchema = new Schema({
         minlength: 3,
         required: true
     },
+    about: {
+        type: String,
+        minlength: 5
+    },
     participants: [{
         type: Schema.Types.ObjectId,
         ref: 'Employee'
@@ -21,16 +25,9 @@ const activitySchema = new Schema({
         type: String,
         minlength: 3
     },
-    guest: {
-        number: {
-            type: Number,
-            min: 1
-        },
-        name:{
-            type: String,
-            minlength: 2
-        }
-    },
+    guests: [{
+            type: String
+    }],
     schedule: {
         time: {
             type: String,
@@ -57,7 +54,7 @@ activitySchema.post('save', function(next){
             console.log(department);
         });
     }).catch((err) => {
-        res.send(err);
+        console.log(err);
     })
 });
 
