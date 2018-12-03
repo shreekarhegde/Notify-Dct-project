@@ -35,7 +35,7 @@ const employeeSchema = new Schema({
         type: String,
         minlength: 1
     },
-    events: [{
+    activities: [{
         type: Schema.Types.ObjectId,
         ref: 'Activity'
     }],

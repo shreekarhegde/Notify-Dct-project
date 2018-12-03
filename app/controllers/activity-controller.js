@@ -6,8 +6,8 @@ const { Activity } = require('../models/activity');
 
 //see all the events
 router.get('/', (req, res) => {
-    Activity.find().populate('department').then((activitis) => {
-        res.send(activitis);
+    Activity.find().populate('department').then((activities) => {
+        res.send(activities);
     }).catch((err) => {
         res.send(err);
     });
