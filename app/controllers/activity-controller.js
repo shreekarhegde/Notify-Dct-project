@@ -38,6 +38,10 @@ router.put('/:id', (req, res) => {
         Activity.findOneAndUpdate({ _id: id}, {$pull: {participants: {$in: participantsToBeRemoved}}}).then((activity) => {
             console.log(activity, "removed particpants");
         });
+
+        Employee.updateMany({_id: participantsToBeRemoved}, {$pull: {activities: id}}).then((employees) => {
+            console.log(employees, "removed employees");
+        })
     }
     
     if(departmentToBeRemoved){
