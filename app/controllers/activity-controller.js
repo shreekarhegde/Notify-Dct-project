@@ -3,6 +3,8 @@ const router = express.Router();
 const { Employee } = require('../models/employee');
 const { Department } = require('../models/department');
 const { Activity } = require('../models/activity');
+const strftime = require('strftime');
+
 
 //see all the activities
 router.get('/', (req, res) => {

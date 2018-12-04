@@ -17,10 +17,10 @@ const activitySchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Employee'
     }],
-    department: {
+    departments: [{
         type: Schema.Types.ObjectId,
         ref: 'Department'
-    },
+    }],
     venue: {
         type: String,
         minlength: 3
