@@ -43,17 +43,14 @@ const activitySchema = new Schema({
 
 activitySchema.post('save', function(next){
     let activityId = this._id;
-    let departmentId = this.department;
+    let departmentId = this.departments;
+    console.log(departmentId);
     let participants = this.participants;
     Employee.updateMany({_id: {$in: participants}}, {$push: {activities: activityId}}).then((participants) => {        
         console.log(participants); 
     });
-    Department.findById(departmentId).populate('activities').then((department) => {
-        console.log(department);
-        department.activities.push(activityId);
-        department.save().then((department) => {
-            console.log(department);
-        });
+    Department.updateMany({_id: departmentId}, {$push: {activities: activityId}}).then((department) => {        
+        console.log(department); 
     }).catch((err) => {
         console.log(err);
     })
