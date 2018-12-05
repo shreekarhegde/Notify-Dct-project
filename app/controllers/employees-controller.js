@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 //find by id 
 router.get('/:id', (req, res) => {
-    Employee.findById(req.params.id).populate('bio.department').then((employee) => {
+    Employee.findById(req.params.id).populate('bio.department').populate('activities').then((employee) => {
         res.send({
             employee
         })

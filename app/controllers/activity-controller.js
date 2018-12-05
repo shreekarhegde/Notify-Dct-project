@@ -3,12 +3,11 @@ const router = express.Router();
 const { Employee } = require('../models/employee');
 const { Department } = require('../models/department');
 const { Activity } = require('../models/activity');
-const strftime = require('strftime');
 
 
 //see all the activities
 router.get('/', (req, res) => {
-    Activity.find().populate('department').populate('participants').then((activities) => {
+    Activity.find().populate('departments').populate('participants').then((activities) => {
         res.send(activities);
     }).catch((err) => {
         res.send(err);
@@ -32,9 +31,10 @@ router.post('/', (req, res) => {
 //update an activity
 router.put('/:id', (req, res) => {
     let body = req.body;
+    console.log(body);
     let id = req.params.id;
     let participantsToBeRemoved = req.body.participantsToBeRemoved;
-    let departmentToBeRemoved = req.body.departmentToBeRemoved;
+    let departmentsToBeRemoved = req.body.departmentsToBeRemoved;
 
     if(participantsToBeRemoved){
         Activity.findOneAndUpdate({ _id: id}, {$pull: {participants: {$in: participantsToBeRemoved}}}).then((activity) => {
@@ -46,10 +46,14 @@ router.put('/:id', (req, res) => {
         })
     }
     
-    if(departmentToBeRemoved){
-        Activity.findOneAndUpdate({ _id: id}, {$pull: {department: {$in: departmentToBeRemoved}}}).then((activity) => {
-            console.log(activity, "removed departments");
+    if(departmentsToBeRemoved){
+        console.log(departmentsToBeRemoved);
+        Activity.findOneAndUpdate({ _id: id}, {$pull: {departments: {$in: departmentsToBeRemoved}}}).then((activity) => {
+            console.log(activity, "removed departments from activity");
         });
+        Department.findByIdAndUpdate({ _id: departmentsToBeRemoved}, {$pull: {activities: id}}).then((departments) => {
+            console.log(departments, "removed activity from departments");
+        })
     }
 
     Activity.findByIdAndUpdate({ _id: id}, {$set: body},{ new: true, runValidators: true }).then((activity) => {
@@ -62,7 +66,7 @@ router.put('/:id', (req, res) => {
             activity,
             notice: 'updated activity successfully'
         })
-        activity.save();
+         activity.save();
     });
 });
 

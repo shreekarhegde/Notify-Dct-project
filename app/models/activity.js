@@ -46,9 +46,10 @@ activitySchema.post('save', function(next){
     let departmentId = this.department;
     let participants = this.participants;
     Employee.updateMany({_id: {$in: participants}}, {$push: {activities: activityId}}).then((participants) => {        
-            console.log(participants); 
+        console.log(participants); 
     });
-    Department.findById(departmentId).populate('activity').then((department) => {
+    Department.findById(departmentId).populate('activities').then((department) => {
+        console.log(department);
         department.activities.push(activityId);
         department.save().then((department) => {
             console.log(department);
