@@ -23,7 +23,7 @@ const departmentSchema = new Schema({
         type: String,
         minlengt: 5,
         maxlength: 100
-    } 
+    }
 });
 
 

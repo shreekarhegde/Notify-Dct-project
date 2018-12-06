@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { Department } = require('../models/department');
 const { Employee } = require('../models/employee');
+const { Post } = require('../models/post');
 const _= require('lodash');
 
 //see all of departments
@@ -58,6 +59,14 @@ router.get('/:id', (req, res) => {
     let id = req.params.id;
     Department.findById(id).populate('members').populate('activities').then((department) => {
         res.send(department);
+    });
+});
+
+//find posts belonging to a department
+router.get('/posts/:id', (req, res) => {
+    let id = req.params.id;
+    Post.find({department: id}).then((posts) => {
+        res.send(posts);
     });
 });
 
