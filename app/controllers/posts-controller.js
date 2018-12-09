@@ -23,13 +23,12 @@ router.post('/', (req, res) => {
 router.put('/:id', (req, res) => {
     let id = req.params.id;
     let body = req.body;
-    console.log(body.comments, "comments");
-    console.log(body, "applause");
+    
         Post.findOneAndUpdate({ _id: id}, {$set: body.applause}).then((post) => {
             console.log(post);
             res.send(post);    
         }).catch((err) => {
-            res.send(err);
+            res.send(err)
         })
     
     if(body.comments !==`` && body.comments !== null){
