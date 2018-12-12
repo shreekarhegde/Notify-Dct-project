@@ -14,6 +14,7 @@ router.post('/', (req, res) => {
     let body = req.body;
     let post = new Post(body);
     post.save().then((post) => {
+        console.log(post);
         res.send(post);
     }).catch((err) => {
         res.send(err);
@@ -25,14 +26,13 @@ router.put('/:id', (req, res) => {
     let body = req.body;
     
         Post.findOneAndUpdate({ _id: id}, {$set: body.applause}).then((post) => {
-            console.log(post);
             res.send(post);    
         }).catch((err) => {
             res.send(err)
         })
     
     if(body.comments !==`` && body.comments !== null){
-        Post.findOneAndUpdate({ _id: id}, {$push:{comments: body.comments}}).then((post) => {
+        Post.findOneAndUpdate({ _id: id}, {$push:{$position: 0, comments: body.comments}}, {new: true, runValidators: true}).then((post) => {
             console.log(post);
             res.send(post);    
         }).catch((err) => {
