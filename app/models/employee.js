@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const { Department } = require('./department');
+delete mongoose.connection.models['Employee'];
 
 const employeeSchema = new Schema({
     bio: {
@@ -31,18 +32,14 @@ const employeeSchema = new Schema({
     picture: {
         type: String
     },
-    post: {
-        type: String,
-        minlength: 1
-    },
     activities: [{
         type: Schema.Types.ObjectId,
         ref: 'Activity'
     }],
-    group: {
+    groups: [{
         type: Schema.Types.ObjectId,
         ref: 'Group'
-    }
+    }]
 });
 
 employeeSchema.post('save', function(next){

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+delete mongoose.connection.models['Department'];
 
 const departmentSchema = new Schema({
     departmentName: {

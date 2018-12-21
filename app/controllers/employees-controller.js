@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { Employee } = require('../models/employee');
-const {Department} = require('../models/department');
+const { Post } = require('../models/post');
 
 //see all the employees
 router.get('/', (req, res) => {
-    Employee.find().populate('bio.department').populate('activities').then((employees) => {
+    Employee.find().populate('bio.department').populate('activities').populate('groups').then((employees) => {
         res.send(employees);
     }).catch((err) => {
         res.send(err);
@@ -20,6 +20,14 @@ router.get('/:id', (req, res) => {
         })
     }).catch((err) => {
         res.send(err);
+    });
+});
+
+//find posts belonging to an employee
+router.get('/posts/:id', (req, res) => {
+    let id = req.params.id;
+    Post.find({profile: id}).then((posts) => {
+        res.send(posts);
     });
 });
 

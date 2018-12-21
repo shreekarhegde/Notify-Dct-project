@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+delete mongoose.connection.models['Activity'];
 const { Department }  = require('./department');
 const { Employee } = require('./employee');
 
