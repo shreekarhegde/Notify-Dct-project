@@ -1,6 +1,8 @@
 # Notify-Dct-project
+
 # Overview
 This project enables the user to create departments, add employees to that department, create groups, customize the calendar by marking the events automatically. Also, user can chat with everybody using global chat, add posts and comments. The code in this repository covers back end of this project.
+
 # Dependencies and installation
 1. cors `npm i cors`
 2. express `npm i express`
@@ -8,6 +10,7 @@ This project enables the user to create departments, add employees to that depar
 4. nodemon `npm i nodemon`
 5. socket.io `npm i socket.io`
 6. strftime `npm i strfttime`
+
 # Usage
  ## `create, edit, view and delete Departments`
 - get '/departments'
@@ -43,6 +46,7 @@ This project enables the user to create departments, add employees to that depar
 ## `add Post`
 - post '/posts'
   - Create a post. Comments and applause buttons get attached to it automatically whenever new post is created.
+  
 # Authors
 1. [Shreekar Hegde](https://github.com/shreekarhegde) 
 2. Libin K
